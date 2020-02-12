@@ -3,9 +3,10 @@
 #
 # Author: Mendix Digital Ecosystems, digitalecosystems@mendix.com
 # Version: 2.0.0
-ARG ROOTFS_IMAGE=mxclyde/rootfs:bionic
+#ARG ROOTFS_IMAGE=mxclyde/rootfs:bionic
 
-FROM ${ROOTFS_IMAGE}
+#FROM ${ROOTFS_IMAGE}
+FROM mxclyde/rootfs:bionic
 LABEL Author="Mendix Digital Ecosystems"
 LABEL maintainer="digitalecosystems@mendix.com"
 
@@ -20,22 +21,18 @@ ARG APPMETRICS_PROMETHEUS
 ARG APPMETRICS_GRAYLOG
 
 # Each comment corresponds to the script line:
-# 1. Install libpng12 backported from Xenial (required by Mono)
-# 2. Create all directories needed by scripts
-# 3. Create all directories needed by CF buildpack
-# 4. Create symlink for java prefs used by CF buildpack
-# 5. Download CF buildpack
-RUN wget https://mxblobstore.azureedge.net/mxblobstore/libpng12-0_1.2.54-1ubuntu1.1_amd64.deb &&\
-   dpkg -i libpng12-0_1.2.54-1ubuntu1.1_amd64.deb &&\
-   mkdir -p buildpack build cache \
+# 1. Create all directories needed by scripts
+# 2. Create all directories needed by CF buildpack
+# 3. Create symlink for java prefs used by CF buildpack
+# 4. Download CF buildpack
+RUN mkdir -p buildpack build cache \
    "/.java/.userPrefs/com/mendix/core" "/root/.java/.userPrefs/com/mendix/core" &&\
    ln -s "/.java/.userPrefs/com/mendix/core/prefs.xml" "/root/.java/.userPrefs/com/mendix/core/prefs.xml" &&\
    echo "CF Buildpack version ${CF_BUILDPACK}" &&\
    wget -qO- https://github.com/mxclyde/cf-mendix-buildpack/archive/${CF_BUILDPACK}.tar.gz | tar xvz -C buildpack --strip-components 1
 
-
 # Copy python scripts which execute the buildpack (exporting the VCAP variables)
-COPY scripts/compilation /buildpack 
+COPY scripts/compilation /buildpack
 # Copy project model/sources
 COPY $BUILD_PATH build
 
@@ -50,15 +47,19 @@ ENV PYTHONPATH "/buildpack/lib/"
 WORKDIR /buildpack
 RUN "/buildpack/compilation" /build /cache &&\
     rm -fr /cache /tmp/javasdk /tmp/opt &&\
-    useradd -r -U -u 1050 -d /root mendix &&\
-    chown -R mendix /buildpack /build /.java /root 
+    useradd -r -U -u 999 -d /root mendix &&\
+    chown -R mendix /buildpack /build /.java /root
 
 # Copy start scripts
-COPY --chown=mendix:mendix scripts/startup /build
-COPY --chown=mendix:mendix scripts/vcap_application.json /build
+#COPY --chown=mendix:mendix scripts/startup /build
+COPY scripts/startup /build
+RUN chown mendix /build/startup
+#COPY --chown=mendix:mendix scripts/vcap_application.json /build
+COPY scripts/vcap_application.json /build
+RUN chown mendix /build/vcap_application.json
 WORKDIR /build
 
-USER 1050
+USER 999
 
 # Expose nginx port
 ENV PORT 8080
