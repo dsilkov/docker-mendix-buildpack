@@ -21,14 +21,11 @@ ARG APPMETRICS_PROMETHEUS
 ARG APPMETRICS_GRAYLOG
 
 # Each comment corresponds to the script line:
-# 1. Install libpng12 backported from Xenial (required by Mono)
-# 2. Create all directories needed by scripts
-# 3. Create all directories needed by CF buildpack
-# 4. Create symlink for java prefs used by CF buildpack
-# 5. Download CF buildpack
-RUN wget https://mxblobstore.azureedge.net/mxblobstore/libpng12-0_1.2.54-1ubuntu1.1_amd64.deb &&\
-   dpkg -i libpng12-0_1.2.54-1ubuntu1.1_amd64.deb &&\
-   mkdir -p buildpack build cache \
+# 1. Create all directories needed by scripts
+# 2. Create all directories needed by CF buildpack
+# 3. Create symlink for java prefs used by CF buildpack
+# 4. Download CF buildpack
+RUN mkdir -p buildpack build cache \
    "/.java/.userPrefs/com/mendix/core" "/root/.java/.userPrefs/com/mendix/core" &&\
    ln -s "/.java/.userPrefs/com/mendix/core/prefs.xml" "/root/.java/.userPrefs/com/mendix/core/prefs.xml" &&\
    echo "CF Buildpack version ${CF_BUILDPACK}" &&\
