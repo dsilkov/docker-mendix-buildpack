@@ -18,28 +18,29 @@ logging.basicConfig(
 )
 
 def app_init_start():
-    instanceType = os.environ.get('CF_INSTANCE_INDEX')
-    if instanceType == "0":
-        if 'MX_DSRA_APP_INITIALIZATION_DSRA_ConfigurationFolderPath' in os.environ:
-            timeout = time.time() + 60
-            logging.info("MX_DSRA_APP_INITIALIZATION_DSRA_ConfigurationFolderPath detected, wait for init files copy")
-            file_path = '/tmp/startinit'
-            while not os.path.exists(file_path):
-                if time.time() > timeout:
-                    break
-                time.sleep(1)
+    if os.environ.get('CF_INSTANCE_INDEX'):
+        instanceType = os.environ.get('CF_INSTANCE_INDEX')
+        if instanceType == "0":
+            if 'MX_DSRA_APP_INITIALIZATION_DSRA_ConfigurationFolderPath' in os.environ:
+                timeout = time.time() + 60
+                logging.info("MX_DSRA_APP_INITIALIZATION_DSRA_ConfigurationFolderPath detected, wait for init files copy")
+                file_path = '/tmp/startinit'
+                while not os.path.exists(file_path):
+                    if time.time() > timeout:
+                        break
+                    time.sleep(1)
+            else:
+                logging.info("MX_DSRA_APP_INITIALIZATION_DSRA_ConfigurationFolderPath not detected, proceed with default start")
+            AppInitPath = os.environ.get('MX_DSRA_APP_INITIALIZATION_DSRA_ConfigurationFolderPath')
+            logging.info("MX_DSRA_APP_INITIALIZATION_DSRA_ConfigurationFolderPath detected, copy of files done to: " + AppInitPath)
+            if os.path.exists(AppInitPath):
+                logging.info("Init copy files dir exists: " + AppInitPath)
+                for initFile in os.listdir(AppInitPath):
+                    logging.info("init file: " + initFile)
+            else:
+                logging.info("Init copy files dir does NOT exists: " + AppInitPath)
         else:
-            logging.info("MX_DSRA_APP_INITIALIZATION_DSRA_ConfigurationFolderPath not detected, proceed with default start")
-        AppInitPath = os.environ.get('MX_DSRA_APP_INITIALIZATION_DSRA_ConfigurationFolderPath')
-        logging.info("MX_DSRA_APP_INITIALIZATION_DSRA_ConfigurationFolderPath detected, copy of files done to: " + AppInitPath)
-        if os.path.exists(AppInitPath):
-            logging.info("Init copy files dir exists: " + AppInitPath)
-            for initFile in os.listdir(AppInitPath):
-                logging.info("init file: " + initFile)
-        else:
-            logging.info("Init copy files dir does NOT exists: " + AppInitPath)
-    else:
-        logging.info("Slave instance, not performing initialization, CF_INSTANCE_INDEX=" + instanceType)
+            logging.info("Slave instance, not performing initialization, CF_INSTANCE_INDEX=" + instanceType)
 
 def export_db_endpoint():
     if 'DATABASE_ENDPOINT' in os.environ:
