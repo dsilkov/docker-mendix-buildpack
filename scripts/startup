@@ -29,16 +29,16 @@ def app_init_start():
                     if time.time() > timeout:
                         break
                     time.sleep(1)
+                AppInitPath = os.environ.get('MX_DSRA_APP_INITIALIZATION_DSRA_ConfigurationFolderPath')
+                logging.info("MX_DSRA_APP_INITIALIZATION_DSRA_ConfigurationFolderPath detected, copy of files done to: " + AppInitPath)
+                if os.path.exists(AppInitPath):
+                    logging.info("Init copy files dir exists: " + AppInitPath)
+                    for initFile in os.listdir(AppInitPath):
+                        logging.info("init file: " + initFile)
+                else:
+                    logging.info("Init copy files dir does NOT exists: " + AppInitPath)
             else:
                 logging.info("MX_DSRA_APP_INITIALIZATION_DSRA_ConfigurationFolderPath not detected, proceed with default start")
-            AppInitPath = os.environ.get('MX_DSRA_APP_INITIALIZATION_DSRA_ConfigurationFolderPath')
-            logging.info("MX_DSRA_APP_INITIALIZATION_DSRA_ConfigurationFolderPath detected, copy of files done to: " + AppInitPath)
-            if os.path.exists(AppInitPath):
-                logging.info("Init copy files dir exists: " + AppInitPath)
-                for initFile in os.listdir(AppInitPath):
-                    logging.info("init file: " + initFile)
-            else:
-                logging.info("Init copy files dir does NOT exists: " + AppInitPath)
         else:
             logging.info("Slave instance, not performing initialization, CF_INSTANCE_INDEX=" + instanceType)
 
