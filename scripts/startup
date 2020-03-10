@@ -24,13 +24,17 @@ def app_init_start():
             if 'APPINIT_CONSTANT' in os.environ:
                 timeout = time.time() + 60
                 AppInitConstantName = os.environ.get('APPINIT_CONSTANT')
-                logging.info("AppInitConstantName detected, wait for init files copy" + AppInitConstantName)
+                logging.info("AppInitConstantName detected, wait for init files copy: " + AppInitConstantName)
                 file_path = '/tmp/startinit'
                 while not os.path.exists(file_path):
                     if time.time() > timeout:
                         break
                     time.sleep(1)
-                AppInitPath = os.environ.get('AppInitConstantName')
+                env_var = os.environ
+                for key in env_var:
+                    if key == AppInitConstantName:
+                        AppInitPath = env_var[key]
+                
                 logging.info("AppInitConstantName detected, copy of files done to: " + AppInitPath)
                 if os.path.exists(AppInitPath):
                     logging.info("Init copy files dir exists: " + AppInitPath)
