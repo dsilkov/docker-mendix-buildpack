@@ -29,7 +29,7 @@ def app_init_start():
                 while not os.path.exists(file_path):
                     if time.time() > timeout:
                         break
-                    time.sleep(1)
+                    time.sleep(5)
                 env_var = os.environ
                 for key in env_var:
                     if key == AppInitConstantName:
