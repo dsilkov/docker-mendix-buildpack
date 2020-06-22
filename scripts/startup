@@ -14,7 +14,7 @@ STARTUP_PATH = sys.argv[1]
 logging.basicConfig(
     level=logging.INFO,
     stream=sys.stdout,
-    format='%(levelname)s: %(message)s',
+    format='%(asctime)s %(levelname)s: %(message)s',
 )
 
 def app_init_start():
@@ -22,12 +22,12 @@ def app_init_start():
         instanceType = os.environ.get('CF_INSTANCE_INDEX')
         if instanceType == "0":
             if 'APPINIT_CONSTANT' in os.environ:
-                timeout = time.time() + 60
+                timeout = time.time() + 120
                 AppInitConstantName = os.environ.get('APPINIT_CONSTANT')
                 logging.info("AppInitConstantName detected, wait for init files copy: " + AppInitConstantName)
                 file_path = '/tmp/startinit'
                 while not os.path.exists(file_path):
-                    time.sleep(1)
+                    time.sleep(5)
                     if time.time() > timeout:
                         break
                 env_var = os.environ
