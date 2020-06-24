@@ -19,6 +19,7 @@ ARG APPMETRICS_AAI
 ARG APPMETRICS_TARGET
 ARG APPMETRICS_PROMETHEUS
 ARG APPMETRICS_GRAYLOG
+ARG BUILDPACK_XTRACE=true
 
 # Each comment corresponds to the script line:
 # 1. Install libpng12 backported from Xenial (required by Mono)
