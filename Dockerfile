@@ -14,7 +14,7 @@ LABEL maintainer="digitalecosystems@mendix.com"
 ARG BUILD_PATH=project
 ARG DD_API_KEY
 # CF buildpack version
-ARG CF_BUILDPACK=telegrafext-nonroot-aai
+ARG CF_BUILDPACK=BuildPacktest1
 ARG APPMETRICS_AAI
 ARG APPMETRICS_TARGET
 ARG APPMETRICS_PROMETHEUS
