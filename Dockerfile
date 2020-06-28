@@ -14,7 +14,7 @@ LABEL maintainer="digitalecosystems@mendix.com"
 ARG BUILD_PATH=project
 ARG DD_API_KEY
 # CF buildpack version
-ARG CF_BUILDPACK=BuildPacktest8
+ARG CF_BUILDPACK=BuildPacktest9
 ARG APPMETRICS_AAI
 ARG APPMETRICS_TARGET
 ARG APPMETRICS_PROMETHEUS
