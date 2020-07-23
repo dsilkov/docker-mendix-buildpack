@@ -51,6 +51,8 @@ ENV PYTHONPATH "/buildpack/lib/"
 WORKDIR /buildpack
 RUN "/buildpack/compilation" /build /cache &&\
     rm -fr /cache /tmp/javasdk /tmp/opt &&\
+    rm -fr /build/.local/usr/lib/jvm/AdoptOpenJDK-jdk* &&\
+    rm -fr /build/.local/usr/lib/jvm/jdk* &&\
     useradd -r -U -u 999 -d /root mendix &&\
     chown -R mendix /buildpack /build /.java /root
 
