@@ -3,9 +3,10 @@
 #
 # Author: Mendix Digital Ecosystems, digitalecosystems@mendix.com
 # Version: 2.0.0
-ARG ROOTFS_IMAGE=mxclyde/rootfs:bionic
+#ARG ROOTFS_IMAGE=mxclyde/rootfs:bionic
 
-FROM ${ROOTFS_IMAGE} as builder
+#FROM ${ROOTFS_IMAGE} as builder
+FROM mxclyde/rootfs:bionic as builder
 LABEL Author="Mendix Digital Ecosystems"
 LABEL maintainer="digitalecosystems@mendix.com"
 
@@ -63,7 +64,8 @@ RUN chown mendix /build/startup
 COPY scripts/vcap_application.json /build
 RUN chown mendix /build/vcap_application.json
 #Make the final container
-FROM ${ROOTFS_IMAGE}
+#FROM ${ROOTFS_IMAGE}
+FROM mxclyde/rootfs:bionic
 LABEL Author="Mendix Digital Ecosystems"
 LABEL maintainer="digitalecosystems@mendix.com"
 
