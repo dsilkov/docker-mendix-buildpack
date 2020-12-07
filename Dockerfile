@@ -5,6 +5,8 @@
 # Version: 2.0.0
 #ARG ROOTFS_IMAGE=mxclyde/rootfs:bionic
 
+ARG CF_BUILDPACK=telegraf_dl_from_release
+
 #FROM ${ROOTFS_IMAGE}
 FROM mxclyde/rootfs:bionic
 LABEL Author="Mendix Digital Ecosystems"
@@ -14,7 +16,7 @@ LABEL maintainer="digitalecosystems@mendix.com"
 ARG BUILD_PATH=project
 ARG DD_API_KEY
 # CF buildpack version
-ARG CF_BUILDPACK=telegraf_dl_from_release
+ARG CF_BUILDPACK
 ARG APPMETRICS_AAI
 ARG APPMETRICS_TARGET
 ARG APPMETRICS_PROMETHEUS
@@ -42,6 +44,9 @@ COPY $BUILD_PATH build
 
 # Add the buildpack modules
 ENV PYTHONPATH "/buildpack/lib/"
+
+# Add a env variable for proxy of cdn
+ENV BLOBSTORE=https://devtools.cpggpc.ca/nexus/repository/mendix-cdn-raw-proxy/
 
 # Each comment corresponds to the script line:
 # 1. Call compilation script
