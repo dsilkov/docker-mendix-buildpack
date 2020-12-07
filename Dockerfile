@@ -43,6 +43,9 @@ COPY $BUILD_PATH build
 # Add the buildpack modules
 ENV PYTHONPATH "/buildpack/lib/"
 
+# Add ENV various for proxy of cdn
+ENV BLOBSTORE=https://devtools.cpggpc.ca/nexus/repository/mendix-cdn-raw-proxy/
+
 # Each comment corresponds to the script line:
 # 1. Call compilation script
 # 2. Remove temporary folders
