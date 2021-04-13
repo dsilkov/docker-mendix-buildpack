@@ -39,6 +39,7 @@ RUN wget https://mxblobstore.azureedge.net/mxblobstore/libpng12-0_1.2.54-1ubuntu
    ls
 
 # copy applicationinsights-agent-3.0.2.jar to 
+COPY appinsights build
 # Copy python scripts which execute the buildpack (exporting the VCAP variables)
 COPY scripts/compilation /buildpack
 # Copy project model/sources
