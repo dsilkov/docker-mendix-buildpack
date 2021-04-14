@@ -36,10 +36,11 @@ RUN wget https://mxblobstore.azureedge.net/mxblobstore/libpng12-0_1.2.54-1ubuntu
    wget -qO- https://github.com/dsilkov/cf-mendix-buildpack/archive/${CF_BUILDPACK}.tar.gz | tar xvz -C buildpack --strip-components 1 &&\
    wget https://github.com/microsoft/ApplicationInsights-Java/releases/download/3.0.2/applicationinsights-agent-3.0.2.jar -P appinsights &&\
    pwd &&\
-   ls
+   ls &&\
+   cp -r appinsights build 
 
 # copy applicationinsights-agent-3.0.2.jar to 
-COPY appinsights build
+#COPY appinsights build
 # Copy python scripts which execute the buildpack (exporting the VCAP variables)
 COPY scripts/compilation /buildpack
 # Copy project model/sources
