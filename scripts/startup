@@ -22,7 +22,7 @@ def app_init_start():
         instanceType = os.environ.get('CF_INSTANCE_INDEX')
         if instanceType == "0":
             if 'APPINIT_CONSTANT' in os.environ:
-                timeout = time.time() + 600
+                timeout = time.time() + 60
                 AppInitConstantName = os.environ.get('APPINIT_CONSTANT')
                 logging.info("AppInitConstantName detected, wait for init files copy: " + AppInitConstantName)
                 file_path = '/tmp/startinit'
