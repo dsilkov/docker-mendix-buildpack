@@ -14,7 +14,7 @@ LABEL maintainer="digitalecosystems@mendix.com"
 ARG BUILD_PATH=project
 ARG DD_API_KEY
 # CF buildpack version
-ARG CF_BUILDPACK=appInsightsAgent1
+ARG CF_BUILDPACK=app-insights-agent
 ARG APPMETRICS_AAI
 ARG APPMETRICS_TARGET
 ARG APPMETRICS_PROMETHEUS
@@ -34,14 +34,11 @@ RUN wget https://mxblobstore.azureedge.net/mxblobstore/libpng12-0_1.2.54-1ubuntu
    ln -s "/.java/.userPrefs/com/mendix/core/prefs.xml" "/root/.java/.userPrefs/com/mendix/core/prefs.xml" &&\
    echo "CF Buildpack version ${CF_BUILDPACK}" &&\
    wget -qO- https://github.com/dsilkov/cf-mendix-buildpack/archive/${CF_BUILDPACK}.tar.gz | tar xvz -C buildpack --strip-components 1 &&\
-   wget https://devtools.cpggpc.ca/nexus/repository/test-repo/applicationinsights-agent-3.1.0.jar -P appinsights &&\
-   wget https://devtools.cpggpc.ca/nexus/repository/test-repo/applicationinsights.json -P appinsights &&\
+   wget https://github.com/microsoft/ApplicationInsights-Java/releases/download/3.1.0/applicationinsights-agent-3.1.0.jar -P appinsights &&\
    pwd &&\
    ls &&\
    cp -r appinsights build 
 
-# copy applicationinsights-agent-3.0.2.jar to 
-#COPY appinsights build
 # Copy python scripts which execute the buildpack (exporting the VCAP variables)
 COPY scripts/compilation /buildpack
 # Copy project model/sources
